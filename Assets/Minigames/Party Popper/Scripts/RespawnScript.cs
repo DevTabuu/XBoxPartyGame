@@ -43,7 +43,7 @@ namespace PartyPopper
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag("DeathTile"))
+            if (collision.gameObject.CompareTag(Tag.TILE_DEATH.GetTagId()))
                 Respawn(2f);
         }
 
