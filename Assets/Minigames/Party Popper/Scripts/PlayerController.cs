@@ -43,7 +43,7 @@ namespace PartyPopper
             _isExecutingVibrateRoutine  = false;
 
             // Registering the OnScore function to the Score event of each goal in the scene.
-            GameObject[] goalObjects = GameObject.FindGameObjectsWithTag("Goal");
+            GameObject[] goalObjects = GameObject.FindGameObjectsWithTag(Tag.GOAL.GetTagId());
             foreach (GameObject goalObject in goalObjects)
             {
                 Goal goal = goalObject.GetComponent<Goal>();

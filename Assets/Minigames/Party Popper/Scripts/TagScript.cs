@@ -27,6 +27,7 @@ namespace PartyPopper
 
         PLAYER,
         BALL,
+        GOAL,
 
         TITLE_GOAL,
         TILE_DEATH,
