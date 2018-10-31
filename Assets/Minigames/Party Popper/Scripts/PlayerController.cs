@@ -10,7 +10,7 @@ namespace PartyPopper
     public class PlayerController : MonoBehaviour
     {
         [SerializeField]
-        private XboxController _controller;
+        public XboxController _controller;
 
         [SerializeField]
         private float _speed;
@@ -87,8 +87,6 @@ namespace PartyPopper
 
             _kickForceMultiplier = Mathf.Max(lTrigger, rTrigger);
             _movement = new Vector3(x, 0, z);
-
-            Debug.Log(InputManager.Instance.GetInstanceID());
         }
 
         void OnTriggerEnter(Collider other)
@@ -129,7 +127,8 @@ namespace PartyPopper
 
         private void VibrateController(float left, float right, float time)
         {
-            StartCoroutine(VibrateControllerRoutine(left, right, time));
+            //StartCoroutine(VibrateControllerRoutine(left, right, time));
+            ControllerInput.SetVibration(_index, left, right, time);
         }
 
         private IEnumerator VibrateControllerRoutine(float left, float right, float time)
@@ -137,7 +136,8 @@ namespace PartyPopper
             if (_isExecutingVibrateRoutine)
                 yield break;
 
-            // XCI.SetVibration(_controller, right, left);
+            //XCI.SetVibration(_controller, right, left);
+
             _isExecutingVibrateRoutine = true;
 
             yield return new WaitForSeconds(time);
