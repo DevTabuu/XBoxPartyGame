@@ -31,7 +31,7 @@ namespace PartyPopper
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.tag.Equals("Ball"))
+            if (other.gameObject.tag.Equals(Tag.BALL.GetTagId()))
             {
                 Ball ball = other.gameObject.GetComponent<Ball>();
                 RespawnScript respawn = other.gameObject.GetComponent<RespawnScript>();
@@ -40,7 +40,7 @@ namespace PartyPopper
                 ball.SetTeam(Team.NONE);
                 respawn.Respawn();
             }
-            else if (other.gameObject.tag.Equals("Player"))
+            else if (other.gameObject.tag.Equals(Tag.PLAYER.GetTagId()))
             {
                 RespawnScript respawn = other.gameObject.GetComponent<RespawnScript>();
                 respawn.Respawn();
