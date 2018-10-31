@@ -21,20 +21,23 @@ namespace PartyPopper
         [SerializeField]
         private float _bounceForce;
 
+        [SerializeField]
+        private int _index;
+
         private Vector3 _movement;
         private float _kickForceMultiplier;
 
         private Rigidbody _rigibody;
         private Ball _touchingBall;
-        private bool _isExecutingVibrateRoutine = false;
+        private bool _isExecutingVibrateRoutine;
 
         private void Start()
         {
             // Hotfix binding
-            InputManager.Instance.BindAxis("PartyPopper_Movement_Horizontal", 0, ControllerAxisCode.LeftStickX);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_Vertical", 0, ControllerAxisCode.LeftStickY);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger", 0, ControllerAxisCode.LeftTrigger);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_RTrigger", 0, ControllerAxisCode.RightTrigger);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_Horizontal", _index, ControllerAxisCode.LeftStickX);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_Vertical", _index, ControllerAxisCode.LeftStickY);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger", _index, ControllerAxisCode.LeftTrigger);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_RTrigger", _index, ControllerAxisCode.RightTrigger);
 
             _rigibody                   = GetComponent<Rigidbody>();
             _kickForceMultiplier        = 0;
@@ -84,17 +87,19 @@ namespace PartyPopper
 
             _kickForceMultiplier = Mathf.Max(lTrigger, rTrigger);
             _movement = new Vector3(x, 0, z);
+
+            Debug.Log(InputManager.Instance.GetInstanceID());
         }
 
         void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Ball"))
+            if (other.CompareTag(Tag.BALL.GetTagId()))
                 _touchingBall = other.gameObject.GetComponent<Ball>();
         }
 
         void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Ball"))
+            if (other.CompareTag(Tag.BALL.GetTagId()))
                 _touchingBall = null;
         }
 
