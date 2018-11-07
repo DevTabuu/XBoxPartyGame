@@ -27,7 +27,7 @@ namespace PartyPopper
         private Vector3 _movement;
         private float _kickForceMultiplier;
 
-        private Rigidbody _rigibody;
+        private Rigidbody _rigidBody;
         private Ball _touchingBall;
         private bool _isExecutingVibrateRoutine;
 
@@ -39,7 +39,7 @@ namespace PartyPopper
             InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger", _index, ControllerAxisCode.LeftTrigger);
             InputManager.Instance.BindAxis("PartyPopper_Movement_RTrigger", _index, ControllerAxisCode.RightTrigger);
 
-            _rigibody                   = GetComponent<Rigidbody>();
+            _rigidBody                  = GetComponent<Rigidbody>();
             _kickForceMultiplier        = 0;
             _movement                   = Vector3.zero;
             _touchingBall               = null;
@@ -54,7 +54,7 @@ namespace PartyPopper
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             // Calculating the facing direction based on the x and y input of a single joystick
             if(_movement.x != 0 || _movement.z != 0)
@@ -66,12 +66,12 @@ namespace PartyPopper
             
 
             if (IsGrounded())
-                _rigibody.AddForce(Vector3.up * _bounceForce, ForceMode.VelocityChange);
+                _rigidBody.AddForce(Vector3.up * _bounceForce, ForceMode.VelocityChange);
 
             Kick(_kickForceMultiplier);
         }
 
-        void Update()
+        private void Update()
         {
             // float x = Input.GetAxis("Horizontal");   // Debug purposes
             // float z = Input.GetAxis("Vertical");     // Debug purposes
@@ -89,13 +89,13 @@ namespace PartyPopper
             _movement = new Vector3(x, 0, z);
         }
 
-        void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag(Tag.BALL.GetTagId()))
                 _touchingBall = other.gameObject.GetComponent<Ball>();
         }
 
-        void OnTriggerExit(Collider other)
+        private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag(Tag.BALL.GetTagId()))
                 _touchingBall = null;
@@ -129,22 +129,6 @@ namespace PartyPopper
         {
             //StartCoroutine(VibrateControllerRoutine(left, right, time));
             ControllerInput.SetVibration(_index, left, right, time);
-        }
-
-        private IEnumerator VibrateControllerRoutine(float left, float right, float time)
-        {
-            if (_isExecutingVibrateRoutine)
-                yield break;
-
-            //XCI.SetVibration(_controller, right, left);
-
-            _isExecutingVibrateRoutine = true;
-
-            yield return new WaitForSeconds(time);
-
-            _isExecutingVibrateRoutine = false;
-
-            // XCI.SetVibration(_controller, 0, 0);
         }
     }
 
