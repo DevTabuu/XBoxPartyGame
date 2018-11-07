@@ -16,18 +16,13 @@ namespace PartyPopper
         private void Start()
         {
             _yPos = transform.position.y;
-            SetTeam(_player.GetTeam());
+            GetComponent<Renderer>().material.color = _player.GetColor();
         }
 
         void Update()
         {
             transform.position = new Vector3(_player.transform.position.x, _yPos, _player.transform.position.z);
             // transform.rotation = _Player.transform.rotation;
-        }
-
-        public void SetTeam(Team team)
-        {
-            GetComponent<Renderer>().material.color = team.GetColor();
         }
     }
 }

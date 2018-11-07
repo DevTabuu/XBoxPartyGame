@@ -15,7 +15,7 @@ namespace PartyPopper
 
         Material _colorableMaterial;
 
-        Team _team;
+        TeamMember _lastTouched;
 
         ParticleSystem.MainModule _particleMain;
         ParticleSystem.TrailModule _particleTrail;
@@ -38,18 +38,18 @@ namespace PartyPopper
             if(_colorableMaterial == null)
                 throw new System.NullReferenceException("Material (" + _colorableMaterialName + ") Not Found!");
 
-            SetTeam(Team.NONE);
+            SetLastTouched(null);
         }
 
-        public Team GetTeam()
+        public TeamMember GetLastTouchingPlayer()
         {
-            return _team;
+            return _lastTouched;
         }
 
-        public void SetTeam(Team team)
+        public void SetLastTouched(TeamMember teamMember)
         {
-            _team = team;
-            Color color = _team.GetColor();
+            _lastTouched = teamMember;
+            Color color = _lastTouched == null ? Color.white : _lastTouched.GetColor();
 
             _particleMain.startColor = color;
             _particleTrail.colorOverTrail = color;
