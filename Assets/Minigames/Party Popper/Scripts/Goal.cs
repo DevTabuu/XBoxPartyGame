@@ -10,15 +10,15 @@ namespace PartyPopper
     {
 
         [SerializeField]
-        private Text _scoreDisplay;
+        private Text _scoredMessage;
 
         [SerializeField]
         private float _displayTime;
 
         private float _displayTimer;
 
-        public delegate void TeamScore(Team team);
-        public event TeamScore TeamScoreEvent;
+        public delegate void TeamMemberScored(TeamMember team);
+        public event TeamMemberScored TeamMemberScoredEvent;
 
         private void Update()
         {
@@ -26,7 +26,7 @@ namespace PartyPopper
                 _displayTimer -= Time.deltaTime;
 
             if (_displayTimer <= 0)
-                _scoreDisplay.gameObject.SetActive(false);
+                _scoredMessage.gameObject.SetActive(false);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -36,8 +36,8 @@ namespace PartyPopper
                 Ball ball = other.gameObject.GetComponent<Ball>();
                 RespawnScript respawn = other.gameObject.GetComponent<RespawnScript>();
 
-                Score(ball.GetTeam());
-                ball.SetTeam(Team.NONE);
+                Score(ball.GetLastTouchingPlayer());
+                ball.SetLastTouched(null);
                 respawn.Respawn();
             }
             else if (other.gameObject.tag.Equals(Tag.PLAYER.GetTagId()))
@@ -47,15 +47,15 @@ namespace PartyPopper
             }
         }
 
-        private void Score(Team team)
+        private void Score(TeamMember teamMember)
         {
-            _scoreDisplay.gameObject.SetActive(true);
+            _scoredMessage.gameObject.SetActive(true);
             _displayTimer = _displayTime;
-            _scoreDisplay.text = team.ToString() + " scored!";
-            _scoreDisplay.color = team.GetColor();
+            _scoredMessage.text = teamMember.GetColor().ToString() + " scored!";
+            _scoredMessage.color = teamMember.GetColor();
 
-            if (TeamScoreEvent != null)
-                TeamScoreEvent(team);
+            if (TeamMemberScoredEvent != null)
+                TeamMemberScoredEvent(teamMember);
         }
     }
 }

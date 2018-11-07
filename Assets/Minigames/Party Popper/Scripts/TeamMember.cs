@@ -1,14 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XBOXParty;
 
 namespace PartyPopper
 {
     public class TeamMember : MonoBehaviour
     {
-
         [SerializeField]
-        Team _team;
+        private int _playerId;
+
+        private int _teamId;
+
+        private Color _color;
+
+        private void Start()
+        {
+            _color = GlobalGameManager.Instance.GetPlayerColor(_playerId);
+            _teamId = GlobalGameManager.Instance.GetPlayerTeamID(_playerId, MinigameMode.MODE_FFA);
+        }
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -18,53 +28,22 @@ namespace PartyPopper
             Ball ball = collision.gameObject.GetComponent<Ball>();
 
             if (ball != null)
-                ball.SetTeam(_team);
+                ball.SetLastTouched(this);
         }
 
-        public Team GetTeam()
+        public Color GetColor()
         {
-            return _team;
+            return _color;
         }
 
-        public void SetTeam(Team team)
+        public int GetPlayerID()
         {
-            _team = team;
+            return _playerId;
         }
-    }
 
-    public enum Team
-    {
-        BLUE,
-        RED,
-        YELLOW,
-        GREEN,
-        NONE
-    }
-
-    public static class TeamMethodsExtention
-    {
-        public static Color GetColor(this Team team)
+        public int GetTeamID()
         {
-            switch (team)
-            {
-                case Team.NONE:
-                    return Color.white;
-
-                case Team.BLUE:
-                    return Color.blue;
-
-                case Team.GREEN:
-                    return Color.green;
-
-                case Team.RED:
-                    return Color.red;
-
-                case Team.YELLOW:
-                    return Color.yellow;
-
-                default:
-                    return Color.white;
-            }
+            return _teamId;
         }
     }
 }

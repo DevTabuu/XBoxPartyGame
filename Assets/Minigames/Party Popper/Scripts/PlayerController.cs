@@ -50,7 +50,7 @@ namespace PartyPopper
             foreach (GameObject goalObject in goalObjects)
             {
                 Goal goal = goalObject.GetComponent<Goal>();
-                goal.TeamScoreEvent += OnScore;
+                goal.TeamMemberScoredEvent += OnScore;
             }
         }
 
@@ -112,7 +112,7 @@ namespace PartyPopper
             }
         }
 
-        private void OnScore(Team team)
+        private void OnScore(TeamMember team)
         {
             if (gameObject.GetComponent<TeamMember>().GetTeam().Equals(team))
             {
