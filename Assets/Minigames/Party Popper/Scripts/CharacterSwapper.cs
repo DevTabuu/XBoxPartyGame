@@ -9,7 +9,10 @@ namespace PartyPopper
     public class CharacterSwapper : MonoBehaviour
     {
         [SerializeField]
-        private List<Image> _bgImages, _playerImage, _Icons;
+        private List<Image> _bgImages, _playerImage, _icons;
+
+        [SerializeField]
+        private List<GameObject> _models;
 
         private Transform _canvas;
 
@@ -74,7 +77,26 @@ namespace PartyPopper
                 index = 2;
             }
 
-            _Icons[index].gameObject.SetActive(true);
+            _icons[index].gameObject.SetActive(true);
+
+            if (aButton)
+                SelectModel(index);
+        }
+
+        private void SelectModel(int number)
+        {
+            int index = number;
+            for(int i = 0; i < _models.Count; i++)
+            {
+                if(index == i)
+                {
+                    _models[i].SetActive(true);
+                }
+                else
+                {
+                    _models[i].SetActive(false);
+                }               
+            }
         }
     }
 }
