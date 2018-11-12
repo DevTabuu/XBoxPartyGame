@@ -10,11 +10,13 @@ namespace PartyPopper
         [SerializeField]
         private List<GameObject> _cameraPoints;
 
+        [SerializeField]
         private float _timer = 0f;
         private int _index = 0;
 
         private void Update()
         {
+            _timer += Time.deltaTime;
             if (_timer >= 60)
             {
                 _timer = 0;
