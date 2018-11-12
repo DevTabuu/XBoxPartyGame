@@ -10,9 +10,6 @@ namespace PartyPopper
     public class PlayerController : MonoBehaviour
     {
         [SerializeField]
-        public XboxController _controller;
-
-        [SerializeField]
         private float _speed;
 
         [SerializeField]
@@ -21,8 +18,7 @@ namespace PartyPopper
         [SerializeField]
         private float _bounceForce;
 
-        [SerializeField]
-        private int _index;
+        private TeamMember _teamMember;
 
         private Vector3 _movement;
         private float _kickForceMultiplier;
@@ -33,11 +29,13 @@ namespace PartyPopper
 
         private void Start()
         {
+            _teamMember = GetComponent<TeamMember>();
+
             // Hotfix binding
-            InputManager.Instance.BindAxis("PartyPopper_Movement_Horizontal", _index, ControllerAxisCode.LeftStickX);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_Vertical", _index, ControllerAxisCode.LeftStickY);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger", _index, ControllerAxisCode.LeftTrigger);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_RTrigger", _index, ControllerAxisCode.RightTrigger);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_Horizontal",   _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickX);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_Vertical",     _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickY);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger",     _teamMember.GetPlayerID(), ControllerAxisCode.LeftTrigger);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_RTrigger",     _teamMember.GetPlayerID(), ControllerAxisCode.RightTrigger);
 
             _rigidBody                  = GetComponent<Rigidbody>();
             _kickForceMultiplier        = 0;
@@ -87,6 +85,11 @@ namespace PartyPopper
 
             _kickForceMultiplier = Mathf.Max(lTrigger, rTrigger);
             _movement = new Vector3(x, 0, z);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                VibrateController(1f, 1f, 1f);
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -114,9 +117,10 @@ namespace PartyPopper
 
         private void OnScore(TeamMember team)
         {
-            if (gameObject.GetComponent<TeamMember>().GetTeam().Equals(team))
+            if (gameObject.GetComponent<TeamMember>().GetTeamID().Equals(team.GetTeamID()))
             {
                 VibrateController(1f, 1f, 1f);
+                Debug.Log("trill");
             }
         }
 
@@ -127,8 +131,7 @@ namespace PartyPopper
 
         private void VibrateController(float left, float right, float time)
         {
-            //StartCoroutine(VibrateControllerRoutine(left, right, time));
-            ControllerInput.SetVibration(_index, left, right, time);
+            ControllerInput.SetVibration(_teamMember.GetPlayerID(), left, right, time);
         }
     }
 

@@ -21,13 +21,13 @@ namespace PartyPopper
             return _scores.ToList();
         }
 
-        public int GetTeamScore(Team team)
+        public int GetTeamScore(int teamId)
         {
             int score = 0;
 
             foreach (KeyValuePair<TeamMember, int> pair in _scores)
             {
-                if (pair.Key.GetTeam().Equals(team))
+                if (pair.Key.GetTeamID().Equals(teamId))
                     score += pair.Value;
             }
 
