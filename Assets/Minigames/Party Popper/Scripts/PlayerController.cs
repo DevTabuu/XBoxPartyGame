@@ -63,24 +63,17 @@ namespace PartyPopper
                 transform.rotation = Quaternion.Euler(0, angle, 0);
                 transform.position += -transform.forward * _speed * Time.fixedDeltaTime;
             }
-            
-
-            //if (IsGrounded())
-            //    _rigidBody.AddForce(Vector3.up * _bounceForce, ForceMode.VelocityChange);
 
             Kick(_kickForceMultiplier);
         }
 
         private void Update()
         {
-            float x = Input.GetAxis("Horizontal");   // Debug purposes
-            float z = -Input.GetAxis("Vertical");     // Debug purposes
+            //float x = Input.GetAxis("Horizontal");   // Debug purposes
+            //float z = -Input.GetAxis("Vertical");     // Debug purposes
 
-            // float x = XCI.GetAxis(XboxAxis.LeftStickX, _controller);
-            // float z = XCI.GetAxis(XboxAxis.LeftStickY, _controller);
-
-            //float x = InputManager.Instance.GetAxis("PartyPopper_Movement_Horizontal");
-            //float z = InputManager.Instance.GetAxis("PartyPopper_Movement_Vertical");
+            float x = InputManager.Instance.GetAxis("PartyPopper_Movement_Horizontal");
+            float z = InputManager.Instance.GetAxis("PartyPopper_Movement_Vertical");
 
             float lTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_LTrigger");
             float rTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_RTrigger");
@@ -122,13 +115,7 @@ namespace PartyPopper
             if (gameObject.GetComponent<TeamMember>().GetTeamID().Equals(team.GetTeamID()))
             {
                 VibrateController(1f, 1f, 1f);
-                Debug.Log("trill");
             }
-        }
-
-        private bool IsGrounded()
-        {
-            return Physics.Raycast(transform.position, -transform.up, 0.1f);
         }
 
         private void VibrateController(float left, float right, float time)

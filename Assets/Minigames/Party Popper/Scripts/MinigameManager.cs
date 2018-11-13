@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using XBOXParty;
 
@@ -22,7 +21,7 @@ namespace PartyPopper
         private GlobalGameManager _globalGameManager;
         private List<TeamMember> _players;
         private Ball _ball;
-        private float _gameTime = 0f;
+        private float _gameTime;
         private int _currentStage;
 
         protected override void Awake()
@@ -33,6 +32,7 @@ namespace PartyPopper
 
         private void Start()
         {
+            _gameTime = 0f;
             _players = new List<TeamMember>();
             foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag(Tag.PLAYER.GetTagId()))
             {
@@ -56,18 +56,15 @@ namespace PartyPopper
         {
             float deltaTime = Time.deltaTime;
 
-            if((int)Mathf.Round(_gameTime / _secondsPerStage) != (int)Mathf.Round((_gameTime + deltaTime) / _secondsPerStage))
+            // Check if a stage's playtime has passed.
+            if ((int)Mathf.Round(_gameTime / _secondsPerStage) != (int)Mathf.Round((_gameTime + deltaTime) / _secondsPerStage))
                 NextStage();
 
             _gameTime += deltaTime;
 
+            // Check if game time is over.
             if (_gameTime >= _gameDuration)
                 EndGame();
-        }
-
-        public List<TeamMember> GetPlayers()
-        {
-            return _players;
         }
 
         public void NextStage()
@@ -134,6 +131,11 @@ namespace PartyPopper
         public Scoreboard GetScoreboard()
         {
             return _scoreboard;
+        }
+
+        public List<TeamMember> GetPlayers()
+        {
+            return _players;
         }
     }
 }
