@@ -14,7 +14,7 @@ namespace PartyPopper
 
         private Color _color;
 
-        private void Start()
+        private void Awake()
         {
             _color = GlobalGameManager.Instance.GetPlayerColor(_playerId);
             _teamId = GlobalGameManager.Instance.GetPlayerTeamID(_playerId, MinigameMode.MODE_FFA);

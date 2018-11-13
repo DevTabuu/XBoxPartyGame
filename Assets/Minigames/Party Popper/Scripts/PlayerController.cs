@@ -18,6 +18,9 @@ namespace PartyPopper
         [SerializeField]
         private float _bounceForce;
 
+        [SerializeField]
+        private GameObject _playerCircle;
+
         private TeamMember _teamMember;
 
         private Vector3 _movement;
@@ -25,13 +28,11 @@ namespace PartyPopper
 
         private Rigidbody _rigidBody;
         private Ball _touchingBall;
-        private bool _isExecutingVibrateRoutine;
 
         private void Start()
         {
             _teamMember = GetComponent<TeamMember>();
 
-            // Hotfix binding
             InputManager.Instance.BindAxis("PartyPopper_Movement_Horizontal",   _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickX);
             InputManager.Instance.BindAxis("PartyPopper_Movement_Vertical",     _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickY);
             InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger",     _teamMember.GetPlayerID(), ControllerAxisCode.LeftTrigger);
@@ -41,7 +42,6 @@ namespace PartyPopper
             _kickForceMultiplier        = 0;
             _movement                   = Vector3.zero;
             _touchingBall               = null;
-            _isExecutingVibrateRoutine  = false;
 
             // Registering the OnScore function to the Score event of each goal in the scene.
             GameObject[] goalObjects = GameObject.FindGameObjectsWithTag(Tag.GOAL.GetTagId());
@@ -50,6 +50,8 @@ namespace PartyPopper
                 Goal goal = goalObject.GetComponent<Goal>();
                 goal.TeamMemberScoredEvent += OnScore;
             }
+
+            _playerCircle.GetComponent<Renderer>().material.color = _teamMember.GetColor();
         }
 
         private void FixedUpdate()
@@ -63,22 +65,22 @@ namespace PartyPopper
             }
             
 
-            if (IsGrounded())
-                _rigidBody.AddForce(Vector3.up * _bounceForce, ForceMode.VelocityChange);
+            //if (IsGrounded())
+            //    _rigidBody.AddForce(Vector3.up * _bounceForce, ForceMode.VelocityChange);
 
             Kick(_kickForceMultiplier);
         }
 
         private void Update()
         {
-            // float x = Input.GetAxis("Horizontal");   // Debug purposes
-            // float z = Input.GetAxis("Vertical");     // Debug purposes
+            float x = Input.GetAxis("Horizontal");   // Debug purposes
+            float z = -Input.GetAxis("Vertical");     // Debug purposes
 
             // float x = XCI.GetAxis(XboxAxis.LeftStickX, _controller);
             // float z = XCI.GetAxis(XboxAxis.LeftStickY, _controller);
 
-            float x = InputManager.Instance.GetAxis("PartyPopper_Movement_Horizontal");
-            float z = InputManager.Instance.GetAxis("PartyPopper_Movement_Vertical");
+            //float x = InputManager.Instance.GetAxis("PartyPopper_Movement_Horizontal");
+            //float z = InputManager.Instance.GetAxis("PartyPopper_Movement_Vertical");
 
             float lTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_LTrigger");
             float rTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_RTrigger");

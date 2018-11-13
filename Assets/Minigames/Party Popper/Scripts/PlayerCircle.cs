@@ -21,7 +21,7 @@ namespace PartyPopper
 
         void Update()
         {
-            transform.position = new Vector3(_player.transform.position.x, _yPos, _player.transform.position.z);
+            // transform.position = new Vector3(_player.transform.position.x, _yPos, _player.transform.position.z);
             // transform.rotation = _Player.transform.rotation;
         }
     }

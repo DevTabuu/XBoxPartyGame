@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace PartyPopper
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class RespawnScript : MonoBehaviour
     {
 
@@ -15,7 +16,7 @@ namespace PartyPopper
         private bool _automaticSpawnpointDetection;
 
         [SerializeField]
-        private Vector3 _spawnpoint;
+        private Vector3 _spawnLocation;
 
         private float _respawnTime;
 
@@ -23,7 +24,7 @@ namespace PartyPopper
         void Start()
         {
             if (_automaticSpawnpointDetection)
-                _spawnpoint = transform.position;
+                _spawnLocation = transform.position;
 
             _respawnTime = 0f;
         }
@@ -47,12 +48,22 @@ namespace PartyPopper
                 Respawn(2f);
         }
 
+        public Vector3 GetSpawnLocation()
+        {
+            return _spawnLocation;
+        }
+
+        public void SetSpawnLocation(Vector3 location)
+        {
+            _spawnLocation = location;
+        }
+
         public void Respawn()
         {
-            transform.position = _spawnpoint;
-
+            transform.position = _spawnLocation;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
             if (RespawnEvent != null)
-                RespawnEvent(_spawnpoint);
+                RespawnEvent(_spawnLocation);
         }
 
         public void Respawn(float time)
