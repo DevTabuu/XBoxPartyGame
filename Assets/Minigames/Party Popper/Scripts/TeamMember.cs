@@ -6,7 +6,7 @@ namespace PartyPopper
     public class TeamMember : MonoBehaviour
     {
         [SerializeField]
-        private int _playerId;
+        public int _playerId;
 
         private int _teamId;
 

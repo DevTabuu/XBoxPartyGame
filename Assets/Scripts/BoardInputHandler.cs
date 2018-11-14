@@ -9,10 +9,10 @@ namespace Board
         private void Start()
         {
             //Bind button
-			//InputManager.Instance.BindButton("Board_Submit", 0, ControllerButtonCode.A, ButtonState.OnPress);
-			//InputManager.Instance.BindButton("Board_Reset", 0, ControllerButtonCode.Back, ButtonState.OnPress);
-			InputManager.Instance.BindButton("Board_Submit", KeyCode.A, ButtonState.OnPress);
-			InputManager.Instance.BindButton("Board_Reset", KeyCode.Backspace, ButtonState.OnPress);
+			InputManager.Instance.BindButton("Board_Submit", 0, ControllerButtonCode.A, ButtonState.OnPress);
+			InputManager.Instance.BindButton("Board_Reset", 0, ControllerButtonCode.Back, ButtonState.OnPress);
+			//InputManager.Instance.BindButton("Board_Submit", KeyCode.A, ButtonState.OnPress);
+			//InputManager.Instance.BindButton("Board_Reset", KeyCode.Backspace, ButtonState.OnPress);
         }
 
         private void OnDestroy()

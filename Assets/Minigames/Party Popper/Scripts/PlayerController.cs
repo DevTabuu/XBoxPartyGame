@@ -19,7 +19,7 @@ namespace PartyPopper
         private float _bounceForce;
 
         [SerializeField]
-        private GameObject _playerCircle;
+        private GameObject _playerCircle; 
 
         private TeamMember _teamMember;
 
@@ -33,10 +33,10 @@ namespace PartyPopper
         {
             _teamMember = GetComponent<TeamMember>();
 
-            InputManager.Instance.BindAxis("PartyPopper_Movement_Horizontal",   _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickX);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_Vertical",     _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickY);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger",     _teamMember.GetPlayerID(), ControllerAxisCode.LeftTrigger);
-            InputManager.Instance.BindAxis("PartyPopper_Movement_RTrigger",     _teamMember.GetPlayerID(), ControllerAxisCode.RightTrigger);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_Horizontal" + _teamMember.GetPlayerID(),   _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickX);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_Vertical" +_teamMember.GetPlayerID(),     _teamMember.GetPlayerID(), ControllerAxisCode.LeftStickY);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_LTrigger" + _teamMember.GetPlayerID(),     _teamMember.GetPlayerID(), ControllerAxisCode.LeftTrigger);
+            InputManager.Instance.BindAxis("PartyPopper_Movement_RTrigger" + _teamMember.GetPlayerID(),     _teamMember.GetPlayerID(), ControllerAxisCode.RightTrigger);
 
             _rigidBody                  = GetComponent<Rigidbody>();
             _kickForceMultiplier        = 0;
@@ -72,19 +72,18 @@ namespace PartyPopper
             //float x = Input.GetAxis("Horizontal");   // Debug purposes
             //float z = -Input.GetAxis("Vertical");     // Debug purposes
 
-            float x = InputManager.Instance.GetAxis("PartyPopper_Movement_Horizontal");
-            float z = InputManager.Instance.GetAxis("PartyPopper_Movement_Vertical");
+            float x = InputManager.Instance.GetAxis("PartyPopper_Movement_Horizontal" + _teamMember.GetPlayerID());
+            float z = InputManager.Instance.GetAxis("PartyPopper_Movement_Vertical" + _teamMember.GetPlayerID());
 
-            float lTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_LTrigger");
-            float rTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_RTrigger");
+            Debug.Log(InputManager.Instance.GetAxis("PartyPopper_Movement_Horizontal" + _teamMember.GetPlayerID()));
+
+            float lTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_LTrigger" + _teamMember.GetPlayerID());
+            float rTrigger = InputManager.Instance.GetAxis("PartyPopper_Movement_RTrigger" + +_teamMember.GetPlayerID());
 
             _kickForceMultiplier = Mathf.Max(lTrigger, rTrigger);
             _movement = new Vector3(x, 0, z);
 
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                VibrateController(1f, 1f, 1f);
-            }
+            transform.Translate(_movement * Time.deltaTime);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -112,15 +111,6 @@ namespace PartyPopper
 
         private void OnScore(TeamMember team)
         {
-            if (gameObject.GetComponent<TeamMember>().GetTeamID().Equals(team.GetTeamID()))
-            {
-                VibrateController(1f, 1f, 1f);
-            }
-        }
-
-        private void VibrateController(float left, float right, float time)
-        {
-            ControllerInput.SetVibration(_teamMember.GetPlayerID(), left, right, time);
         }
     }
 
